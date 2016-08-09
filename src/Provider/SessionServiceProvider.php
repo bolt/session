@@ -10,7 +10,6 @@ use Bolt\Session\OptionsBag;
 use Bolt\Session\Serializer\NativeSerializer;
 use Bolt\Session\SessionListener;
 use Bolt\Session\SessionStorage;
-use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\Uri;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -107,7 +106,7 @@ class SessionServiceProvider implements ServiceProviderInterface
     public function configure(Application $app)
     {
         $app['session.options'] = $app['config']->get('general/session', []) + [
-            'name'            => 'bolt_session_',
+            'name'            => 'bolt_session',
             'restrict_realm'  => true,
             'cookie_lifetime' => $app['config']->get('general/cookies_lifetime'),
             'cookie_path'     => $app['resources']->getUrl('root'),
@@ -364,13 +363,9 @@ class SessionServiceProvider implements ServiceProviderInterface
             }
         } elseif (isset($options['save_path'])) {
             foreach (explode(',', $options['save_path']) as $conn) {
-                $uri = new Uri($conn);
-
-                $connBag = new ParameterBag();
-                $connBag->set('uri', $uri);
-                $connBag->add(Psr7\parse_query($uri->getQuery()));
-
-                $toParse[] = $connBag;
+                $conn = new ParameterBag($conn);
+                $conn->set('uri', new Uri($conn));
+                $toParse[] = $conn;
             }
         }
 
