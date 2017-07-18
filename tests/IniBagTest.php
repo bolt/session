@@ -1,6 +1,6 @@
 <?php
 
-namespace Bolt\Tests\Session;
+namespace Bolt\Session\Tests;
 
 use Bolt\Session\IniBag;
 use PHPUnit\Framework\TestCase;

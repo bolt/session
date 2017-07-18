@@ -1,10 +1,10 @@
 <?php
 
-namespace Bolt\Tests\Session\Handler\Factory;
+namespace Bolt\Session\Tests\Handler\Factory;
 
 use Bolt\Session\Handler\Factory\RedisFactory;
 use Bolt\Session\OptionsBag;
-use Bolt\Tests\Session\Handler\Factory\Mock\MockRedis;
+use Bolt\Session\Tests\Handler\Factory\Mock\MockRedis;
 use PHPUnit\Framework\TestCase;
 use Redis;
 

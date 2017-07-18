@@ -1,11 +1,11 @@
 <?php
 
-namespace Bolt\Tests\Session;
+namespace Bolt\Session\Tests;
 
 use Bolt\Tests\BoltUnitTest;
 
 /**
- * Class to test src/Session/SessionStorage.
+ * Class to test src/SessionStorage.
  *
  * @author Gawain Lynch <gawain.lynch@gmail.com>
  */

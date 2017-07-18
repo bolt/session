@@ -1,12 +1,12 @@
 <?php
 
-namespace Bolt\Tests\Session;
+namespace Bolt\Session\Tests\Generator;
 
 use Bolt\Session\Generator\NativeGenerator;
 use Bolt\Tests\BoltUnitTest;
 
 /**
- * Class to test src/Session/Generator/NativeGenerator.
+ * Class to test src/Generator/NativeGenerator.
  *
  * @author Gawain Lynch <gawain.lynch@gmail.com>
  */

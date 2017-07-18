@@ -1,12 +1,12 @@
 <?php
 
-namespace Bolt\Tests\Session;
+namespace Bolt\Session\Tests\Handler;
 
 use Bolt\Session\Handler\FileHandler;
 use Bolt\Tests\BoltUnitTest;
 
 /**
- * Class to test src/Session/Handler/FileHandler.
+ * Class to test src/Handler/FileHandler.
  *
  * @author Gawain Lynch <gawain.lynch@gmail.com>
  */

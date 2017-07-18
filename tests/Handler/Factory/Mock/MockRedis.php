@@ -1,6 +1,6 @@
 <?php
 
-namespace Bolt\Tests\Session\Handler\Factory\Mock;
+namespace Bolt\Session\Tests\Handler\Factory\Mock;
 
 class MockRedis extends \Redis
 {

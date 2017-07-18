@@ -1,6 +1,6 @@
 <?php
 
-namespace Bolt\Provider;
+namespace Bolt\Session\Bridge\Silex1;
 
 use Bolt\Helpers\Deprecated;
 use Bolt\Session\Generator\NativeGenerator;

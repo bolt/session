@@ -1,12 +1,12 @@
 <?php
 
-namespace Bolt\Tests\Session;
+namespace Bolt\Session\Tests\Generator;
 
 use Bolt\Session\Generator\RandomGenerator;
 use Bolt\Tests\BoltUnitTest;
 
 /**
- * Class to test src/Session/Generator/RandomGenerator.
+ * Class to test src/Generator/RandomGenerator.
  *
  * @group legacy
  *

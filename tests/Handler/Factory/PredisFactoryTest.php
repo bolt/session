@@ -1,6 +1,6 @@
 <?php
 
-namespace Bolt\Tests\Session\Handler\Factory;
+namespace Bolt\Session\Tests\Handler\Factory;
 
 use Bolt\Session\Handler\Factory\PredisFactory;
 use Bolt\Session\OptionsBag;

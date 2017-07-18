@@ -1,13 +1,13 @@
 <?php
 
-namespace Bolt\Tests\Session;
+namespace Bolt\Session\Tests;
 
 use Bolt\Session\OptionsBag;
 use Bolt\Tests\BoltUnitTest;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
- * Class to test src/Session/OptionsBag.
+ * Class to test src/OptionsBag.
  *
  * @author Gawain Lynch <gawain.lynch@gmail.com>
  */

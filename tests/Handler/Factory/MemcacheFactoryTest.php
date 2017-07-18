@@ -1,10 +1,10 @@
 <?php
 
-namespace Bolt\Tests\Session\Handler\Factory;
+namespace Bolt\Session\Tests\Handler\Factory;
 
 use Bolt\Session\Handler\Factory\MemcacheFactory;
 use Bolt\Session\OptionsBag;
-use Bolt\Tests\Session\Handler\Factory\Mock\MockMemcache;
+use Bolt\Session\Tests\Handler\Factory\Mock\MockMemcache;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
