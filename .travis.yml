@@ -1,0 +1,38 @@
+language: php
+
+sudo: false
+dist: trusty
+
+php:
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
+  - hhvm
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: hhvm
+
+before_install:
+  # Add Redis & Memcached extensions
+  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  # Memcache to be removed in when PHP 5 is dropped
+  - |
+    if [[ $TRAVIS_PHP_VERSION =~ ^5 ]]; then
+        echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    fi
+
+before_script:
+  - composer self-update || true
+  - composer install --prefer-dist
+
+script:
+  - vendor/bin/phpunit
+
+cache:
+  directories:
+    - vendor
+    - $COMPOSER_CACHE_DIR
