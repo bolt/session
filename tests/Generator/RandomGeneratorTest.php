@@ -3,7 +3,7 @@
 namespace Bolt\Session\Tests\Generator;
 
 use Bolt\Session\Generator\RandomGenerator;
-use Bolt\Tests\BoltUnitTest;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class to test src/Generator/RandomGenerator.
@@ -12,21 +12,11 @@ use Bolt\Tests\BoltUnitTest;
  *
  * @author Gawain Lynch <gawain.lynch@gmail.com>
  */
-class RandomGeneratorTest extends BoltUnitTest
+class RandomGeneratorTest extends TestCase
 {
-    public function testConstructor()
-    {
-        $app = $this->getApp();
-        $fooFighters = new RandomGenerator($app['randomgenerator']);
-
-        $this->assertObjectHasAttribute('generator',  $fooFighters);
-        $this->assertObjectHasAttribute('length',     $fooFighters);
-    }
-
     public function testGenerateId()
     {
-        $app = $this->getApp();
-        $fooFighters = new RandomGenerator($app['randomgenerator'], 42);
+        $fooFighters = new RandomGenerator(null, 42);
         $daveGrohl = $fooFighters->generateId();
 
         $this->assertNotSame('Nirvana', $daveGrohl);

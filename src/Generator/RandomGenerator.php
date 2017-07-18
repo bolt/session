@@ -3,7 +3,6 @@
 namespace Bolt\Session\Generator;
 
 use Bolt\Common\Deprecated;
-use Bolt\Security\Random\Generator;
 
 Deprecated::cls(RandomGenerator::class, 3.3, NativeGenerator::class);
 
@@ -14,30 +13,16 @@ Deprecated::cls(RandomGenerator::class, 3.3, NativeGenerator::class);
  *
  * @author Carson Full <carsonfull@gmail.com>
  */
-class RandomGenerator implements GeneratorInterface
+class RandomGenerator extends NativeGenerator
 {
-    /** @var Generator */
-    protected $generator;
-    /** @var integer */
-    protected $length;
-
     /**
      * Constructor.
      *
-     * @param Generator $generator
-     * @param integer   $length
+     * @param mixed   $generator
+     * @param integer $length
      */
-    public function __construct($generator, $length = 32)
+    public function __construct($generator = null, $length = 32)
     {
-        $this->generator = $generator;
-        $this->length = $length;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function generateId()
-    {
-        return $this->generator->generateString($this->length);
+        parent::__construct($length);
     }
 }
