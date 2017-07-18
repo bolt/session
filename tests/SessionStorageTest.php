@@ -2,14 +2,14 @@
 
 namespace Bolt\Session\Tests;
 
-use Bolt\Tests\BoltUnitTest;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class to test src/SessionStorage.
  *
  * @author Gawain Lynch <gawain.lynch@gmail.com>
  */
-class SessionStorageTest extends BoltUnitTest
+class SessionStorageTest extends TestCase
 {
     public function test()
     {

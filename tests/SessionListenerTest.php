@@ -2,14 +2,14 @@
 
 namespace Bolt\Session\Tests;
 
-use Bolt\Tests\BoltUnitTest;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class to test src/SessionListener.
  *
  * @author Gawain Lynch <gawain.lynch@gmail.com>
  */
-class SessionListenerTest extends BoltUnitTest
+class SessionListenerTest extends TestCase
 {
     public function test()
     {

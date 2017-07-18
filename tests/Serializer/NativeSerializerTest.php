@@ -3,14 +3,14 @@
 namespace Bolt\Session\Tests\Serializer;
 
 use Bolt\Session\Serializer\NativeSerializer;
-use Bolt\Tests\BoltUnitTest;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class to test src/Serializer/NativeSerializer.
  *
  * @author Gawain Lynch <gawain.lynch@gmail.com>
  */
-class NativeSerializerTest extends BoltUnitTest
+class NativeSerializerTest extends TestCase
 {
     public function testSerialize()
     {

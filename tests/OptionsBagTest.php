@@ -3,7 +3,7 @@
 namespace Bolt\Session\Tests;
 
 use Bolt\Session\OptionsBag;
-use Bolt\Tests\BoltUnitTest;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  *
  * @author Gawain Lynch <gawain.lynch@gmail.com>
  */
-class OptionsBagTest extends BoltUnitTest
+class OptionsBagTest extends TestCase
 {
     public function testInstanceOf()
     {

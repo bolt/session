@@ -3,14 +3,14 @@
 namespace Bolt\Session\Tests\Generator;
 
 use Bolt\Session\Generator\NativeGenerator;
-use Bolt\Tests\BoltUnitTest;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class to test src/Generator/NativeGenerator.
  *
  * @author Gawain Lynch <gawain.lynch@gmail.com>
  */
-class NativeGeneratorTest extends BoltUnitTest
+class NativeGeneratorTest extends TestCase
 {
     public function testGenerateId()
     {
