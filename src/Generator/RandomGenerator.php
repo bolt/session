@@ -2,7 +2,7 @@
 
 namespace Bolt\Session\Generator;
 
-use Bolt\Helpers\Deprecated;
+use Bolt\Common\Deprecated;
 use Bolt\Security\Random\Generator;
 
 Deprecated::cls(RandomGenerator::class, 3.3, NativeGenerator::class);

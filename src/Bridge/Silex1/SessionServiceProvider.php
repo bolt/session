@@ -2,7 +2,7 @@
 
 namespace Bolt\Session\Bridge\Silex1;
 
-use Bolt\Helpers\Deprecated;
+use Bolt\Common\Deprecated;
 use Bolt\Session\Generator\NativeGenerator;
 use Bolt\Session\Handler\Factory\MemcachedFactory;
 use Bolt\Session\Handler\Factory\MemcacheFactory;

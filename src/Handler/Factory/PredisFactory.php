@@ -2,7 +2,7 @@
 
 namespace Bolt\Session\Handler\Factory;
 
-use Bolt\Helpers\Deprecated;
+use Bolt\Common\Deprecated;
 use Bolt\Session\OptionsBag;
 use Predis;
 
