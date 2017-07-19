@@ -3,15 +3,19 @@
 namespace Bolt\Session\Tests\Handler;
 
 use Bolt\Session\Handler\FileHandler;
-use Bolt\Tests\BoltUnitTest;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class to test src/Handler/FileHandler.
  *
  * @author Gawain Lynch <gawain.lynch@gmail.com>
  */
-class FileHandlerTest extends BoltUnitTest
+class FileHandlerTest extends TestCase
 {
+    /** @var vfsStreamDirectory */
+    protected $vfs;
     /** @var string */
     protected $savePath;
     /** @var string */
@@ -21,8 +25,8 @@ class FileHandlerTest extends BoltUnitTest
 
     public function setUp()
     {
-        $app = $this->getApp();
-        $this->savePath = $app['path_resolver']->resolve('cache');
+        $this->vfs = VfsStream::setup();
+        $this->savePath = $this->vfs->url();
         $this->sessionName = 'george';
         $this->sessionFile = $this->savePath . '/' . $this->sessionName . '.sess';
     }

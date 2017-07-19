@@ -22,6 +22,7 @@
     },
     "require-dev": {
         "bolt/filesystem": "^2.0",
+        "mikey179/vfsstream": "^1.6",
         "phpunit/phpunit": "^4.8",
         "predis/predis": "^1.1",
         "silex/silex": "^1.3",
