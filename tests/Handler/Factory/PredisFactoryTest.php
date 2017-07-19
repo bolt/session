@@ -110,7 +110,12 @@ class PredisFactoryTest extends TestCase
                     'prefix' => 'foo',
                 ],
             ],
+        ];
+    }
 
+    public function legacySingleConnectionCreationProvider()
+    {
+        return [
             'with prefix at root' => [
                 [
                     'connection' => [],
@@ -122,7 +127,6 @@ class PredisFactoryTest extends TestCase
                 ],
             ],
 
-            // deprecated
             'at root' => [
                 [
                     'scheme'     => 'tcp',
@@ -233,6 +237,20 @@ class PredisFactoryTest extends TestCase
         $this->assertSingleConnection($client, $expectedParameters);
 
         $this->assertOptions($client, $expectedOptions);
+    }
+
+    /**
+     * @dataProvider legacySingleConnectionCreationProvider
+     *
+     * @group legacy
+     *
+     * @param array $sessionOptions
+     * @param array $expectedParameters
+     * @param array $expectedOptions
+     */
+    public function testLegacySingleConnectionCreation($sessionOptions, $expectedParameters, $expectedOptions = [])
+    {
+        $this->testSingleConnectionCreation($sessionOptions, $expectedParameters, $expectedOptions);
     }
 
     /**

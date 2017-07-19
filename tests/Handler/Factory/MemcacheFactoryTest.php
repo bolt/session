@@ -112,24 +112,6 @@ class MemcacheFactoryTest extends TestCase
                 ],
             ],
 
-            // deprecated
-            'connection at root' => [
-                [
-                    'host'       => '10.0.0.1',
-                    'port'       => 11212,
-                    'timeout'    => 34,
-                    'persistent' => true,
-                ],
-                [
-                    [
-                        'host'       => '10.0.0.1',
-                        'port'       => 11212,
-                        'timeout'    => 34.0,
-                        'persistent' => true,
-                    ],
-                ],
-            ],
-
             'connections strings' => [
                 [
                     'connections' => [
@@ -288,6 +270,28 @@ class MemcacheFactoryTest extends TestCase
         ];
     }
 
+    public function createLegacyProvider()
+    {
+        return [
+            'connection at root' => [
+                [
+                    'host'       => '10.0.0.1',
+                    'port'       => 11212,
+                    'timeout'    => 34,
+                    'persistent' => true,
+                ],
+                [
+                    [
+                        'host'       => '10.0.0.1',
+                        'port'       => 11212,
+                        'timeout'    => 34.0,
+                        'persistent' => true,
+                    ],
+                ],
+            ],
+        ];
+    }
+
     /**
      * @dataProvider createProvider
      *
@@ -306,6 +310,19 @@ class MemcacheFactoryTest extends TestCase
         $this->assertInstanceOf(MockMemcache::class, $memcache);
 
         $this->assertServers($expectedConnections, $memcache->getServers());
+    }
+
+    /**
+     * @group legacy
+     *
+     * @dataProvider createLegacyProvider
+     *
+     * @param array $sessionOptions
+     * @param array $expectedConnections
+     */
+    public function testCreateLegacy($sessionOptions, $expectedConnections)
+    {
+        $this->testCreate($sessionOptions, $expectedConnections);
     }
 
     /**

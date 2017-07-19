@@ -74,7 +74,7 @@ class RedisFactoryTest extends TestCase
                         'retry_interval' => 500,
                         'weight'         => 3,
                         'database'       => 4,
-                        'auth'           => 'secret', // deprecated
+                        'password'       => 'secret',
                     ],
                     'options' => [
                         'prefix' => 'foo',
@@ -121,30 +121,6 @@ class RedisFactoryTest extends TestCase
                 ],
             ],
 
-            // deprecated
-            'connection at root' => [
-                [
-                    'host'       => 'redis.test',
-                    'port'       => 6380,
-                    'timeout'    => 34.0,
-                    'persistent' => true,
-                    'password'   => 'secret',
-                    'database'   => 4,
-                    'prefix'     => 'foo',
-                ],
-                [
-                    [
-                        'host'       => 'redis.test',
-                        'port'       => 6380,
-                        'timeout'    => 34.0,
-                        'persistent' => true,
-                        'password'   => 'secret',
-                        'database'   => 4,
-                        'prefix'     => 'foo',
-                    ],
-                ],
-            ],
-
             'connections strings' => [
                 [
                     'connections' => [
@@ -179,7 +155,7 @@ class RedisFactoryTest extends TestCase
                             'retry_interval' => 500,
                             'weight'         => 3,
                             'database'       => 4,
-                            'auth'           => 'secret', // deprecated
+                            'password'       => 'secret',
                         ],
                         [
                             'host'           => '10.0.0.2',
@@ -321,6 +297,47 @@ class RedisFactoryTest extends TestCase
         ];
     }
 
+    public function parseLegacyProvider()
+    {
+        return [
+            'connection at root' => [
+                [
+                    'host'       => 'redis.test',
+                    'port'       => 6380,
+                    'timeout'    => 34.0,
+                    'persistent' => true,
+                    'password'   => 'secret',
+                    'database'   => 4,
+                    'prefix'     => 'foo',
+                ],
+                [
+                    [
+                        'host'       => 'redis.test',
+                        'port'       => 6380,
+                        'timeout'    => 34.0,
+                        'persistent' => true,
+                        'password'   => 'secret',
+                        'database'   => 4,
+                        'prefix'     => 'foo',
+                    ],
+                ],
+            ],
+
+            'auth key in connection array' => [
+                [
+                    'connection' => [
+                        'auth' => 'secret',
+                    ],
+                ],
+                [
+                    [
+                        'password' => 'secret',
+                    ],
+                ],
+            ],
+        ];
+    }
+
     /**
      * @dataProvider parseProvider
      *
@@ -336,6 +353,19 @@ class RedisFactoryTest extends TestCase
         $connections = $factory->parse($sessionOptions);
 
         $this->assertConnections($expectedConnections, $connections);
+    }
+
+    /**
+     * @group legacy
+     *
+     * @dataProvider parseProvider
+     *
+     * @param array $sessionOptions
+     * @param array $expectedConnections
+     */
+    public function testParseLegacy($sessionOptions, $expectedConnections)
+    {
+        $this->testParse($sessionOptions, $expectedConnections);
     }
 
     /**
@@ -379,8 +409,10 @@ class RedisFactoryTest extends TestCase
                 'timeout'    => 5.0,
                 'weight'     => 3,
                 'database'   => 4,
-                'prefix'     => 'foo',
                 'password'   => 'secret',
+            ],
+            'options' => [
+                'prefix'     => 'foo',
             ],
         ]);
 

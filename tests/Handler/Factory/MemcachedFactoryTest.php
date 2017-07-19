@@ -109,20 +109,6 @@ class MemcachedFactoryTest extends TestCase
                 ],
             ],
 
-            // deprecated
-            'connection at root' => [
-                [
-                    'host' => '10.0.0.1',
-                    'port' => 11212,
-                ],
-                [
-                    [
-                        'host' => '10.0.0.1',
-                        'port' => 11212,
-                    ],
-                ],
-            ],
-
             'connections strings' => [
                 [
                     'connections' => [
@@ -188,20 +174,6 @@ class MemcachedFactoryTest extends TestCase
                 ],
             ],
 
-            // for v2 of extension. support will be removed once PHP 5 support is dropped.
-            'save path with persistent id' => [
-                [
-                    'save_path' => 'PERSISTENT=foo host1:11212:2',
-                ],
-                [
-                    [
-                        'host'   => 'host1',
-                        'port'   => 11212,
-                        'weight' => 2,
-                    ],
-                ],
-            ],
-
             'save path unix path' => [
                 [
                     'save_path' => '/var/run/memcache.sock',
@@ -253,6 +225,38 @@ class MemcachedFactoryTest extends TestCase
         ];
     }
 
+    public function parseLegacyProvider()
+    {
+        return [
+            'connection at root' => [
+                [
+                    'host' => '10.0.0.1',
+                    'port' => 11212,
+                ],
+                [
+                    [
+                        'host' => '10.0.0.1',
+                        'port' => 11212,
+                    ],
+                ],
+            ],
+
+            // for v2 of extension. support will be removed once PHP 5 support is dropped.
+            'save path with persistent id' => [
+                [
+                    'save_path' => 'PERSISTENT=foo host1:11212:2',
+                ],
+                [
+                    [
+                        'host'   => 'host1',
+                        'port'   => 11212,
+                        'weight' => 2,
+                    ],
+                ],
+            ],
+        ];
+    }
+
     /**
      * @dataProvider parseProvider
      *
@@ -268,6 +272,19 @@ class MemcachedFactoryTest extends TestCase
         $connections = $factory->parse($sessionOptions);
 
         $this->assertConnections($expectedConnections, $connections);
+    }
+
+    /**
+     * @group legacy
+     *
+     * @dataProvider parseLegacyProvider
+     *
+     * @param array $sessionOptions
+     * @param array $expectedConnections
+     */
+    public function testParseLegacy($sessionOptions, $expectedConnections)
+    {
+        $this->testParse($sessionOptions, $expectedConnections);
     }
 
     /**
@@ -370,7 +387,12 @@ class MemcachedFactoryTest extends TestCase
                     'prefix'                 => 'sessions:',
                 ],
             ],
+        ];
+    }
 
+    public function parseLegacyOptionsProvider()
+    {
+        return [
             'v2 options from user are ignored if v3 are specified as well' => [
                 [
                     'options' => [
@@ -495,6 +517,20 @@ class MemcachedFactoryTest extends TestCase
         $this->assertInstanceOf(OptionsBag::class, $actual);
 
         $this->assertEquals($expected, $actual->all());
+    }
+
+    /**
+     * @group legacy
+     *
+     * @dataProvider parseLegacyOptionsProvider
+     *
+     * @param $sessionOptions
+     * @param $iniValues
+     * @param $expected
+     */
+    public function testParseLegacyOptions($sessionOptions, $iniValues, $expected)
+    {
+        $this->testParseOptions($sessionOptions, $iniValues, $expected);
     }
 
     public function parsePersistentIdProvider()
