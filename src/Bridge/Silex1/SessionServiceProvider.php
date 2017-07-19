@@ -106,8 +106,6 @@ class SessionServiceProvider implements ServiceProviderInterface
         $app['session.bag.metadata'] = function () {
             return new MetadataBag();
         };
-
-        $this->configure($app);
     }
 
     /**
@@ -116,27 +114,6 @@ class SessionServiceProvider implements ServiceProviderInterface
     public function boot(Application $app)
     {
         $app['dispatcher']->addSubscriber($app['session.listener']);
-    }
-
-    /**
-     * This should be the only place in this class that is specific to bolt.
-     *
-     * @param Application $app
-     */
-    public function configure(Application $app)
-    {
-        $app['session.options'] = function () use ($app) {
-            $config = $app['config'];
-
-            return $config->get('general/session', []) + [
-                'name'            => 'bolt_session',
-                'restrict_realm'  => true,
-                'cookie_lifetime' => $config->get('general/cookies_lifetime'),
-                'cookie_domain'   => $config->get('general/cookies_domain'),
-                'cookie_secure'   => $config->get('general/enforce_ssl'),
-                'cookie_httponly' => true,
-            ];
-        };
     }
 
     /**
@@ -203,13 +180,6 @@ class SessionServiceProvider implements ServiceProviderInterface
                     $options->add($app['session.storage.options']);
                 }
 
-                // PHP's native C code accesses filesystem with different permissions than userland code.
-                // If php.ini is using the default (files) handler, use ours instead to prevent this problem.
-                if ($options->get('save_handler') === 'files') {
-                    $options->set('save_handler', 'filesystem');
-                    $options->set('save_path', 'var://sessions');
-                }
-
                 $overrides = $app['session.options'];
 
                 // Don't let save_path for different save_handler bleed in.
@@ -252,7 +222,7 @@ class SessionServiceProvider implements ServiceProviderInterface
     {
         $app['session.handler_factory.files'] = $app->protect(
             function ($options) use ($app) {
-                return new FileHandler($options['save_path'], $app['logger.system']);
+                return new FileHandler($options['save_path'], $app['logger']);
             }
         );
     }
