@@ -146,67 +146,6 @@ class IniBagTest extends TestCase
         }
     }
 
-    public function testSetBoolean()
-    {
-        $ini = new IniBag();
-
-        $backup = ini_get('assert.bail');
-
-        try {
-            $ini->set('assert.bail', false);
-            $this->assertSame('0', ini_get('assert.bail'));
-
-            $ini->set('assert.bail', true);
-            $this->assertSame('1', ini_get('assert.bail'));
-        } finally {
-            ini_set('assert.bail', $backup);
-        }
-    }
-
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Unable to change ini option "precision" to -2.
-     */
-    public function testSetInvalidValue()
-    {
-        $ini = new IniBag();
-
-        $ini->set('precision', -2);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage ini values must be scalar or null. Got: array
-     */
-    public function testSetInvalidType()
-    {
-        $ini = new IniBag();
-
-        $ini->set('precision', []);
-    }
-
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage The ini option "session.derp" does not exist. New ini options cannot be added.
-     */
-    public function testSetNewKey()
-    {
-        $ini = new IniBag('session');
-
-        $ini->set('derp', 'foo');
-    }
-
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Unable to change ini option "allow_url_fopen", because it is not editable at runtime.
-     */
-    public function testSetUnauthorized()
-    {
-        $ini = new IniBag();
-
-        $ini->set('allow_url_fopen', true);
-    }
-
     public function testAdd()
     {
         $ini = new IniBag('session');

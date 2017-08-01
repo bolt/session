@@ -2,7 +2,7 @@
 
 namespace Bolt\Session;
 
-use Webmozart\Assert\Assert;
+use Bolt\Common\Ini;
 
 /**
  * IniBag is a container for ini options.
@@ -143,50 +143,7 @@ class IniBag extends OptionsBag
      */
     public function set($key, $value)
     {
-        Assert::nullOrScalar($value, 'ini values must be scalar or null. Got: %s');
-
-        $origValue = $value;
-
-        // false is converted to empty string
-        // converting to '0' is more consistent
-        if ($value === false) {
-            $value = '0';
-        }
-
-        $fullKey = $this->prefix . $key;
-
-        $ex = null;
-        set_error_handler(function ($severity, $message, $file, $line) use (&$ex) {
-            $ex = new \ErrorException($message, 0, $severity, $file, $line);
-        });
-
-        try {
-            $result = ini_set($fullKey, $value);
-        } finally {
-            restore_error_handler();
-        }
-
-        if ($result === false || $ex !== null) {
-            if ($this->has($key)) {
-                if (!$this->cache[$key]) {
-                    throw new \RuntimeException(sprintf('Unable to change ini option "%s", because it is not editable at runtime.', $fullKey, $value), 0, $ex);
-                }
-
-                if (is_string($origValue)) {
-                    $value = '"' . $origValue . '"';
-                } elseif ($origValue === false) {
-                    $value = 'false';
-                } elseif ($origValue === true) {
-                    $value = 'true';
-                } elseif ($origValue === null) {
-                    $value = 'null';
-                }
-
-                throw new \RuntimeException(sprintf('Unable to change ini option "%s" to %s.', $fullKey, $value), 0, $ex);
-            }
-
-            throw new \RuntimeException(sprintf('The ini option "%s" does not exist. New ini options cannot be added.', $fullKey), 0, $ex);
-        }
+        Ini::set($this->prefix . $key, $value);
     }
 
     /**
@@ -196,11 +153,7 @@ class IniBag extends OptionsBag
      */
     public function has($key)
     {
-        if ($this->cache === null) {
-            $this->all();
-        }
-
-        return array_key_exists($key, $this->cache);
+        return Ini::has($this->prefix . $key);
     }
 
     /**

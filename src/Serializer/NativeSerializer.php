@@ -2,6 +2,8 @@
 
 namespace Bolt\Session\Serializer;
 
+use Bolt\Common\Serialization;
+
 class NativeSerializer implements SerializerInterface
 {
     /**
@@ -9,7 +11,7 @@ class NativeSerializer implements SerializerInterface
      */
     public function serialize($data)
     {
-        return serialize($data);
+        return Serialization::dump($data);
     }
 
     /**
@@ -17,20 +19,6 @@ class NativeSerializer implements SerializerInterface
      */
     public function unserialize($data)
     {
-        $ex = null;
-        set_error_handler(
-            function () use (&$ex) {
-                $ex = new \RuntimeException('Unable to unserialize session data.');
-            }
-        );
-
-        $session = unserialize($data);
-        restore_error_handler();
-
-        if ($ex instanceof \Exception) {
-            throw $ex;
-        }
-
-        return $session;
+        return Serialization::parse($data);
     }
 }
