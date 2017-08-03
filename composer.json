@@ -21,7 +21,10 @@
         "symfony/polyfill-php70": "^1.0"
     },
     "require-dev": {
+        "bolt/codingstyle": "^2.0@dev",
         "bolt/filesystem": "^2.0",
+        "escapestudios/symfony2-coding-standard": "^3.0@dev",
+        "friendsofphp/php-cs-fixer": "^2.4",
         "mikey179/vfsstream": "^1.6",
         "phpunit/phpunit": "^4.8",
         "predis/predis": "^1.1",
@@ -39,6 +42,13 @@
         "psr-4": {
             "Bolt\\Session\\Tests\\": "tests"
         }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "lint": [
+            "phpcbf",
+            "php-cs-fixer fix"
+        ]
     },
     "extra": {
         "branch-alias": {
