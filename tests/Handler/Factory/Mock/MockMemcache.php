@@ -12,9 +12,9 @@ class MockMemcache extends \Memcache
         $persistent = true,
         $weight = null,
         $timeout = 1,
-        $retry_interval = 15,
+        $retryInterval = 15,
         $status = true,
-        callable $failure_callback = null
+        callable $failureCallback = null
     ) {
         $this->servers[] = [
             'host'           => $host,
@@ -22,7 +22,7 @@ class MockMemcache extends \Memcache
             'persistent'     => $persistent,
             'weight'         => $weight,
             'timeout'        => $timeout,
-            'retry_interval' => $retry_interval,
+            'retry_interval' => $retryInterval,
         ];
     }
 

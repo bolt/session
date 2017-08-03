@@ -28,7 +28,7 @@ class SessionStorage implements SessionStorageInterface
     /** @var string */
     protected $name = 'PHPSESSID';
 
-    /** @var boolean */
+    /** @var bool */
     protected $started = false;
 
     /** @var SessionBagInterface[] */

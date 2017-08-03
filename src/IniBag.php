@@ -23,8 +23,8 @@ class IniBag extends OptionsBag
      *
      * Note that extension and prefix, if given, are removed from the beginning of all keys.
      *
-     * @param string|null $extension The extension name to pull ini values from, or null for all ini values.
-     * @param string|null $prefix    An additional prefix to filter by.
+     * @param string|null $extension The extension name to pull ini values from, or null for all ini values
+     * @param string|null $prefix    An additional prefix to filter by
      */
     public function __construct($extension = null, $prefix = null)
     {

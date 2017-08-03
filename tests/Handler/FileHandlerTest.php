@@ -34,12 +34,12 @@ class FileHandlerTest extends TestCase
     public function testConstructor()
     {
         $this->assertClassHasAttribute('savePath', FileHandler::class);
-        $this->assertClassHasAttribute('fs',       FileHandler::class);
+        $this->assertClassHasAttribute('fs', FileHandler::class);
 
         $fsh = new FileHandler($this->savePath);
 
         $this->assertObjectHasAttribute('savePath', $fsh);
-        $this->assertObjectHasAttribute('fs',       $fsh);
+        $this->assertObjectHasAttribute('fs', $fsh);
 
         $this->assertAttributeEquals($this->savePath, 'savePath', $fsh);
     }

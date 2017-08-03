@@ -16,9 +16,9 @@ use Symfony\Component\Finder\Finder;
  */
 class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
 {
-    /** @var integer */
+    /** @var int */
     protected $depth;
-    /** @var integer */
+    /** @var int */
     protected $mode;
     /** @var string */
     protected $savePath;

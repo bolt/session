@@ -72,7 +72,7 @@ class FilesystemHandler extends AbstractHandler
             ->date("< now - $maxlifetime seconds")
         ;
         foreach ($files as $file) {
-            /** @var $file FileInterface */
+            /* @var $file FileInterface */
             $file->delete();
         }
     }

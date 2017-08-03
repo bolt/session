@@ -17,7 +17,7 @@ class NativeGenerator implements GeneratorInterface
     /**
      * Constructor.
      *
-     * @param int $length The length of the random string that should be returned in bytes.
+     * @param int $length The length of the random string that should be returned in bytes
      */
     public function __construct($length = 32)
     {

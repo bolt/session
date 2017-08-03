@@ -18,8 +18,8 @@ class RandomGenerator extends NativeGenerator
     /**
      * Constructor.
      *
-     * @param mixed   $generator
-     * @param integer $length
+     * @param mixed $generator
+     * @param int   $length
      */
     public function __construct($generator = null, $length = 32)
     {
