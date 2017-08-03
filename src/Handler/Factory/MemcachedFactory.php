@@ -150,7 +150,7 @@ class MemcachedFactory extends AbstractFactory
         // If user specified v2 option, warn and replace with new name
         foreach ($v2IniKeys as $new => list($old, $type)) {
             if ($options->has($old)) {
-                Deprecated::warn("Memcached option \"$old\"", 3.3, "Use \"$new\" instead.");
+                Deprecated::warn("Memcached option \"$old\"", 1.0, "Use \"$new\" instead.");
 
                 if (!$options->has($new)) {
                     $options->set($new, $options->get($old));

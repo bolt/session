@@ -51,7 +51,7 @@ class PredisFactory extends AbstractFactory
         $options = $sessionOptions->get('options', []);
 
         if ($sessionOptions->get('prefix')) {
-            Deprecated::warn('Specifying "prefix" directly in session config', 3.3, 'Move it under the "options" key.');
+            Deprecated::warn('Specifying "prefix" directly in session config', 1.0, 'Move it under the "options" key.');
 
             $options['prefix'] = $sessionOptions->get('prefix');
         }

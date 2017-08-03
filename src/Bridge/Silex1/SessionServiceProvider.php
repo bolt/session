@@ -262,7 +262,7 @@ class SessionServiceProvider implements ServiceProviderInterface
         $app['session.handler_factory.memcache'] = $app->protect(
             function (OptionsBag $options, $key = 'memcache') use ($app) {
                 if ($key === 'memcache') {
-                    Deprecated::warn('"memcache" session handler', 3.3, 'Use "memcached" instead.');
+                    Deprecated::warn('"memcache" session handler', 1.0, 'Use "memcached" instead.');
                 }
 
                 $memcache = $app['session.handler_factory.backing_' . $key]($options);
@@ -271,14 +271,14 @@ class SessionServiceProvider implements ServiceProviderInterface
 
                 $memcacheOptions = [];
                 if (isset($options['expiretime'])) {
-                    Deprecated::warn('Specifying "expiretime" directly in session config', 3.3, 'Move it under the "options" key.');
+                    Deprecated::warn('Specifying "expiretime" directly in session config', 1.0, 'Move it under the "options" key.');
 
                     $memcacheOptions['expiretime'] = $options['expiretime'];
                 } elseif (isset($handlerOptions['expiretime'])) {
                     $memcacheOptions['expiretime'] = $handlerOptions['expiretime'];
                 }
                 if (isset($options['prefix'])) {
-                    Deprecated::warn('Specifying "prefix" directly in session config', 3.3, 'Move it under the "options" key.');
+                    Deprecated::warn('Specifying "prefix" directly in session config', 1.0, 'Move it under the "options" key.');
 
                     $memcacheOptions['prefix'] = $options['prefix'];
                 } elseif (isset($handlerOptions['prefix'])) {

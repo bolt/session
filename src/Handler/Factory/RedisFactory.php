@@ -123,7 +123,7 @@ class RedisFactory extends AbstractFactory
         if ($options->has('prefix')) {
             $prefix = $options->get('prefix');
         } elseif ($sessionOptions->has('prefix')) {
-            Deprecated::warn('Specifying "prefix" directly in session config', 3.3, 'Move it under the "options" key.');
+            Deprecated::warn('Specifying "prefix" directly in session config', 1.0, 'Move it under the "options" key.');
 
             $prefix = $sessionOptions->get('prefix');
         }
@@ -187,7 +187,7 @@ class RedisFactory extends AbstractFactory
         $item = new OptionsBag($item);
 
         if ($prefix = $item->get('prefix')) {
-            Deprecated::warn('Specifying "prefix" under the "connection(s)" key', 3.3, 'Move it under the "options" key.');
+            Deprecated::warn('Specifying "prefix" under the "connection(s)" key', 1.0, 'Move it under the "options" key.');
         }
 
         $conn = new OptionsBag([
@@ -208,7 +208,7 @@ class RedisFactory extends AbstractFactory
         }
 
         if ($item['auth']) { // Not sure if needed for BC
-            Deprecated::warn('Connection key "auth"', 3.3, 'Use "password" instead.');
+            Deprecated::warn('Connection key "auth"', 1.0, 'Use "password" instead.');
 
             $conn['password'] = $item['auth'];
         }

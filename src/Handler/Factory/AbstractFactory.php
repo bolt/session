@@ -66,7 +66,7 @@ abstract class AbstractFactory
         } elseif ($options->has('connection')) {
             $connections = [$options->get('connection')];
         } elseif ($options->has('host') || $options->has('port')) {
-            Deprecated::warn('Specifying "host" and other options directly in session config', 3.3, 'Move them under the "connection" key.');
+            Deprecated::warn('Specifying "host" and other options directly in session config', 1.0, 'Move them under the "connection" key.');
 
             $connections = [$options->all()];
         } else {

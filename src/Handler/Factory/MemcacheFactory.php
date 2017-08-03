@@ -10,7 +10,7 @@ use RuntimeException;
 /**
  * Factory for creating Memcache instances from Session options.
  *
- * @deprecated since 3.3, will be removed in 4.0.
+ * @deprecated since 1.0, will be removed in 2.0.
  *
  * @author Carson Full <carsonfull@gmail.com>
  */
