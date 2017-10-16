@@ -63,7 +63,7 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
         }
 
         if (!is_dir($savePath)) {
-            $this->fs->mkdir($savePath, 0777);
+            $this->fs->mkdir($savePath);
         }
 
         $this->depth = $depth;
@@ -84,8 +84,10 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
      */
     public function write($sessionId, $data)
     {
+        $file = $this->getSessionFileName($sessionId);
+
         try {
-            $this->fs->dumpFile($this->getSessionFileName($sessionId), $data);
+            $this->fs->dumpFile($file, $data);
         } catch (IOException $e) {
             $this->logger->error('Unable to write session file to ' . $this->savePath);
 
@@ -93,7 +95,7 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
         }
 
         try {
-            $this->fs->chmod($this->getSessionFileName($sessionId), $this->mode);
+            $this->fs->chmod($file, $this->mode);
         } catch (IOException $e) {
             $this->logger->error('Unable to set correct permissions on session file in ' . $this->savePath);
         }
@@ -117,12 +119,14 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
      */
     public function destroy($sessionId)
     {
+        $file = $this->getSessionFileName($sessionId);
+
         try {
-            $this->fs->remove($this->getSessionFileName($sessionId));
+            $this->fs->remove($file);
 
             return true;
         } catch (IOException $e) {
-            $this->logger->error('Unable to remove session file ' . $this->getSessionFileName($sessionId));
+            $this->logger->error('Unable to remove session file ' . $file);
 
             return false;
         }
