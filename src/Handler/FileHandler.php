@@ -2,6 +2,7 @@
 
 namespace Bolt\Session\Handler;
 
+use Bolt\Common\Thrower;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -16,8 +17,6 @@ use Symfony\Component\Finder\Finder;
  */
 class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
 {
-    /** @var int */
-    protected $depth;
     /** @var int */
     protected $mode;
     /** @var string */
@@ -41,7 +40,6 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
         $this->logger = $logger ?: new NullLogger();
 
         // @see http://php.net/manual/en/session.configuration.php#ini.session.save-path
-        $depth = 1;
         $mode = 0600;
         $savePath = $savePath ?: sys_get_temp_dir();
 
@@ -53,20 +51,17 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
 
             $path = explode(';', $savePath);
             if ($count === 1) {
-                $depth = $path[0];
                 $savePath = $path[1];
             } else {
-                $depth = $path[0];
                 $mode = intval($path[1], 8);
                 $savePath = $path[2];
             }
         }
 
         if (!is_dir($savePath)) {
-            $this->fs->mkdir($savePath, 0777);
+            $this->fs->mkdir($savePath);
         }
 
-        $this->depth = $depth;
         $this->mode = $mode;
         $this->savePath = $savePath;
     }
@@ -76,7 +71,21 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
      */
     public function read($sessionId)
     {
-        return file_get_contents($this->getSessionFileName($sessionId));
+        $file = $this->getSessionFileName($sessionId);
+
+        try {
+            if ($this->fs->exists($file)) {
+                try {
+                    return Thrower::call('file_get_contents', $file);
+                } catch (\ErrorException $e) {
+                    $this->logger->error(sprintf('Unable to read session file: %s', $file), ['exception' => $e]);
+                }
+            }
+        } catch (IOException $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
+        }
+
+        return '';
     }
 
     /**
@@ -84,8 +93,10 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
      */
     public function write($sessionId, $data)
     {
+        $file = $this->getSessionFileName($sessionId);
+
         try {
-            $this->fs->dumpFile($this->getSessionFileName($sessionId), $data);
+            $this->fs->dumpFile($file, $data);
         } catch (IOException $e) {
             $this->logger->error('Unable to write session file to ' . $this->savePath);
 
@@ -93,7 +104,7 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
         }
 
         try {
-            $this->fs->chmod($this->getSessionFileName($sessionId), $this->mode);
+            $this->fs->chmod($file, $this->mode);
         } catch (IOException $e) {
             $this->logger->error('Unable to set correct permissions on session file in ' . $this->savePath);
         }
@@ -117,12 +128,14 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
      */
     public function destroy($sessionId)
     {
+        $file = $this->getSessionFileName($sessionId);
+
         try {
-            $this->fs->remove($this->getSessionFileName($sessionId));
+            $this->fs->remove($file);
 
             return true;
         } catch (IOException $e) {
-            $this->logger->error('Unable to remove session file ' . $this->getSessionFileName($sessionId));
+            $this->logger->error('Unable to remove session file ' . $file);
 
             return false;
         }

@@ -19,7 +19,7 @@ class FileHandlerTest extends TestCase
     /** @var string */
     protected $savePath;
     /** @var string */
-    protected $sessionName;
+    protected $sessionId;
     /** @var string */
     protected $sessionFile;
 
@@ -27,28 +27,15 @@ class FileHandlerTest extends TestCase
     {
         $this->vfs = VfsStream::setup();
         $this->savePath = $this->vfs->url();
-        $this->sessionName = 'george';
-        $this->sessionFile = $this->savePath . '/' . $this->sessionName . '.sess';
-    }
-
-    public function testConstructor()
-    {
-        $this->assertClassHasAttribute('savePath', FileHandler::class);
-        $this->assertClassHasAttribute('fs', FileHandler::class);
-
-        $fsh = new FileHandler($this->savePath);
-
-        $this->assertObjectHasAttribute('savePath', $fsh);
-        $this->assertObjectHasAttribute('fs', $fsh);
-
-        $this->assertAttributeEquals($this->savePath, 'savePath', $fsh);
+        $this->sessionId = 'george';
+        $this->sessionFile = $this->savePath . '/' . $this->sessionId . '.sess';
     }
 
     public function testOpen()
     {
         $fsh = new FileHandler($this->savePath);
 
-        $result = $fsh->open($this->savePath, $this->sessionName);
+        $result = $fsh->open(null, 'PHPSESSID');
         $this->assertTrue($result);
     }
 
@@ -60,47 +47,65 @@ class FileHandlerTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @covers \Bolt\Session\Handler\FileHandler::write
-     * @covers \Bolt\Session\Handler\FileHandler::read
-     */
-    public function testWriteRead()
+    public function testRead()
+    {
+        file_put_contents($this->sessionFile, 'kittens');
+
+        $fsh = new FileHandler($this->savePath);
+
+        $result = $fsh->read($this->sessionId);
+        $this->assertSame('kittens', $result);
+    }
+
+    public function testReadNew()
     {
         $fsh = new FileHandler($this->savePath);
-        $fsh->open($this->savePath, $this->sessionName);
 
-        $result = $fsh->write($this->sessionName, 'kittens');
+        $result = $fsh->read('new');
+        $this->assertSame('', $result);
+    }
+
+    public function testReadUnreadable()
+    {
+        file_put_contents($this->savePath . '/unreadable.sess', '');
+        chmod($this->savePath . '/unreadable.sess', 0);
+
+        $fsh = new FileHandler($this->savePath);
+
+        $result = $fsh->read('unreadable');
+        $this->assertSame('', $result);
+    }
+
+    public function testWrite()
+    {
+        $fsh = new FileHandler($this->savePath);
+
+        $result = $fsh->write($this->sessionId, 'kittens');
         $this->assertTrue($result);
-
-        $result = $fsh->read($this->sessionName);
-        $this->assertSame('kittens', $result);
+        $this->assertFileExists($this->sessionFile);
         $this->assertStringEqualsFile($this->sessionFile, 'kittens');
     }
 
     public function testDestroy()
     {
+        file_put_contents($this->sessionFile, 'kittens');
+
         $fsh = new FileHandler($this->savePath);
-        $fsh->open($this->savePath, $this->sessionName);
 
-        $fsh->write($this->sessionName, 'kittens');
-        $this->assertFileExists($this->sessionFile);
-
-        $result = $fsh->destroy($this->sessionName);
+        $result = $fsh->destroy($this->sessionId);
         $this->assertTrue($result);
-        $this->assertFileNotExists($this->sessionName);
+        $this->assertFileNotExists($this->sessionFile);
     }
 
     public function testGc()
     {
+        file_put_contents($this->sessionFile, 'kittens');
+        touch($this->sessionFile, time() - 5);
+
         $fsh = new FileHandler($this->savePath);
-        $fsh->open($this->savePath, $this->sessionName);
 
-        $fsh->write($this->sessionName, 'kittens');
-        $this->assertFileExists($this->sessionFile);
-
-        sleep(1);
         $result = $fsh->gc(1);
         $this->assertTrue($result);
-        $this->assertFileNotExists($this->sessionName);
+        $this->assertFileNotExists($this->sessionFile);
     }
 }
