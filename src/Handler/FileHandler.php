@@ -17,8 +17,6 @@ use Symfony\Component\Finder\Finder;
 class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
 {
     /** @var int */
-    protected $depth;
-    /** @var int */
     protected $mode;
     /** @var string */
     protected $savePath;
@@ -41,7 +39,6 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
         $this->logger = $logger ?: new NullLogger();
 
         // @see http://php.net/manual/en/session.configuration.php#ini.session.save-path
-        $depth = 1;
         $mode = 0600;
         $savePath = $savePath ?: sys_get_temp_dir();
 
@@ -53,10 +50,8 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
 
             $path = explode(';', $savePath);
             if ($count === 1) {
-                $depth = $path[0];
                 $savePath = $path[1];
             } else {
-                $depth = $path[0];
                 $mode = intval($path[1], 8);
                 $savePath = $path[2];
             }
@@ -66,7 +61,6 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
             $this->fs->mkdir($savePath);
         }
 
-        $this->depth = $depth;
         $this->mode = $mode;
         $this->savePath = $savePath;
     }
