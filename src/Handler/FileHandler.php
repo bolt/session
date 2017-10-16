@@ -2,6 +2,7 @@
 
 namespace Bolt\Session\Handler;
 
+use Bolt\Common\Thrower;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -70,7 +71,21 @@ class FileHandler extends AbstractHandler implements LazyWriteHandlerInterface
      */
     public function read($sessionId)
     {
-        return file_get_contents($this->getSessionFileName($sessionId));
+        $file = $this->getSessionFileName($sessionId);
+
+        try {
+            if ($this->fs->exists($file)) {
+                try {
+                    return Thrower::call('file_get_contents', $file);
+                } catch (\ErrorException $e) {
+                    $this->logger->error(sprintf('Unable to read session file: %s', $file), ['exception' => $e]);
+                }
+            }
+        } catch (IOException $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
+        }
+
+        return '';
     }
 
     /**

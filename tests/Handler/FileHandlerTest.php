@@ -57,6 +57,25 @@ class FileHandlerTest extends TestCase
         $this->assertSame('kittens', $result);
     }
 
+    public function testReadNew()
+    {
+        $fsh = new FileHandler($this->savePath);
+
+        $result = $fsh->read('new');
+        $this->assertSame('', $result);
+    }
+
+    public function testReadUnreadable()
+    {
+        file_put_contents($this->savePath . '/unreadable.sess', '');
+        chmod($this->savePath . '/unreadable.sess', 0);
+
+        $fsh = new FileHandler($this->savePath);
+
+        $result = $fsh->read('unreadable');
+        $this->assertSame('', $result);
+    }
+
     public function testWrite()
     {
         $fsh = new FileHandler($this->savePath);
