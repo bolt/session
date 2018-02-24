@@ -5,7 +5,7 @@ namespace Bolt\Session\Tests\Handler\Factory;
 use Bolt\Session\Handler\Factory\MemcacheFactory;
 use Bolt\Session\OptionsBag;
 use Bolt\Session\Tests\Handler\Factory\Mock\MockMemcache;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @requires extension memcache

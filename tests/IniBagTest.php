@@ -132,6 +132,9 @@ class IniBagTest extends TestCase
         $this->assertFalse($ini->has('kajhsdfakjsdfh'));
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function testSet()
     {
         $ini = new IniBag('session');
@@ -146,6 +149,9 @@ class IniBagTest extends TestCase
         }
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function testAdd()
     {
         $ini = new IniBag('session');
@@ -160,6 +166,9 @@ class IniBagTest extends TestCase
         }
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function testReplace()
     {
         $ini = new IniBag('session');
