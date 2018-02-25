@@ -102,7 +102,7 @@ class MemcachedFactory extends AbstractFactory
         $memcached->setOptions([
             Memcached::OPT_BINARY_PROTOCOL        => $binary,
             Memcached::OPT_LIBKETAMA_COMPATIBLE   => $options->getBoolean('consistent_hash'),
-            Memcached::OPT_SERVER_FAILURE_LIMIT   => $options->getInt('server_failure_limit'),
+            Memcached::OPT_SERVER_FAILURE_LIMIT   => $options->getInt('server_failure_limit', 1), // See #3
             Memcached::OPT_NUMBER_OF_REPLICAS     => $options->getInt('number_of_replicas'),
             Memcached::OPT_RANDOMIZE_REPLICA_READ => $options->getBoolean('randomize_replica_read'),
             Memcached::OPT_REMOVE_FAILED_SERVERS  => $options->getBoolean('remove_failed_servers'),

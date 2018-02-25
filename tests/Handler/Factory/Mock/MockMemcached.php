@@ -48,7 +48,7 @@ class MockMemcached extends \Memcached
         $this->options[$value];
     }
 
-    public function setOptions(/* @noinspection PhpSignatureMismatchDuringInheritanceInspection */ $options)
+    public function setOptions($options)
     {
         $this->options = $options;
     }
